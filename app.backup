@@ -1,0 +1,72 @@
+
+library(shiny)
+library(shinydashboard)
+library(leaflet)
+library(dplyr)
+
+## Main UI
+ui <- dashboardPage(
+  dashboardHeader(
+    title = "Seattle Police Incidents - 2017", titleWidth = 400
+  ),
+  dashboardSidebar(disable = TRUE),
+  dashboardBody(
+    fluidRow(
+        box(leafletOutput("map1"), width = 8),
+        box(uiOutput("Controls"), width = 4)
+    ),
+    fluidRow(
+      valueBoxOutput("totalCrimeBox")
+    )
+  )
+)
+
+## Server
+server <- function(input, output){
+  spd <- read.csv("data/Seattle_Police_Department_Police_Report_Incident (3).csv")
+  spd_subset_keep <- c("Summarized.Offense.Description", "Date.Reported",
+                       "Longitude", "Latitude")
+  spd_subset <- spd[spd_subset_keep]
+  name <- sort(unique(spd_subset$Summarized.Offense.Description))
+
+  dataset <- reactive({
+    spd_subset[spd_subset$Summarized.Offense.Description == Controls$name]
+  })
+
+  ## Outputs
+  ### Maps
+  output$map1 <- renderLeaflet({
+    leaflet(spd_subset) %>%
+      addTiles() %>%
+      fitBounds(~min(Longitude), ~min(Latitude), ~max(Longitude), ~max(Latitude))
+
+    })
+  ### Controls
+
+
+
+  output$Controls <- renderUI({
+    list(selectInput("name", "Select type of crime",
+                     name,
+                     selected=name[1]) ) })
+
+  #
+  # observe({
+  #   leafletProxy("map1", data = dataset()) %>%
+  #   clearShapes() %>%
+  #     addAwesomeMarkers(
+  #       lng = dataset$Longitude,
+  #       lat = dataset$Latitude,
+  #       label = dataset$Summarized.Offense.Description
+  #       )
+  # })
+  ### Boxes
+  output$totalCrimeBox <- renderValueBox(
+    {valueBox(
+      paste0(nrow(spd_subset)),"Total number of incidents", icon = icon("thumbs-down", lib = "glyphicon"), color = "red"
+    )}
+  )
+  }
+
+# Run the application
+shinyApp(ui, server)

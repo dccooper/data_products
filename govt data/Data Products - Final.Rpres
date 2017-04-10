@@ -1,0 +1,40 @@
+Data Products - Reproducible Pitch
+========================================================
+author: David Cooper
+date: 9 APR 2017
+autosize: true
+
+Introduction
+========================================================
+This presentation is developed as part of the Developing Data Products course, available at Coursera.org.
+
+The Shiny app mentioned in this presentation can be found at:   https://dccooper.shinyapps.io/hrdata/ 
+
+THe source code for this application can be found at:
+
+My Shiny App
+========================================================
+
+The purpose of my app is to develop a dashboard, backed by HR data, that can allow managers to analyze trends across their organization to spot trouble points.
+
+The data comes from the [Human Resources Analytics dataset](https://www.kaggle.com/ludobenistant/hr-analytics) found at Kaggle.com
+
+How the app works
+========================================================
+
+The app allows you to sort the data by several different dimensions:
+- Department where they work
+- Employeee salary level
+- Was the employee injured at work?, and
+- Was the employee promoted within the last 5 years?
+
+Then you can see how these elements influence things like:
+- Overall employee satisfaction level
+- Average number of hours worked per month, and
+- Whether or not the employee ultimate left the company
+
+Try it out or build your own
+=================================
+Again, you can find the app at: https://dccooper.shinyapps.io/hrdata/   
+  
+And you can find the soruce code at: 
